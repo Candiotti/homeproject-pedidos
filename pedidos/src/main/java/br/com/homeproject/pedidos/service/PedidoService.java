@@ -14,6 +14,7 @@ import br.com.homeproject.pedidos.model.Produto;
 import br.com.homeproject.pedidos.repository.ClienteRepository;
 import br.com.homeproject.pedidos.repository.PedidoRepository;
 import br.com.homeproject.pedidos.repository.ProdutoRepository;
+import br.com.homeproject.pedidos.exception.PedidoException;
 import br.com.homeproject.pedidos.components.PedidoSender;
 
 @Service
@@ -49,9 +50,18 @@ public class PedidoService {
 		List<Produto> produtos = pedidoDto.getProdutosId().stream().map(i -> produtoRepository.getOne(i))
 				.collect(Collectors.toList());
 
-		pedido.setCliente(cliente.get());
-		pedido.setProdutos(produtos);
-		pedido.setValorTotal(pedidoDto.somarValorTotalPedido(produtos));
+		if (cliente.isPresent()) {
+			pedido.setCliente(cliente.get());
+		} else {
+			throw new PedidoException("Cliente não encontrado!");
+		}
+
+		if (!produtos.isEmpty()) {
+			pedido.setProdutos(produtos);
+			pedido.setValorTotal(pedidoDto.somarValorTotalPedido(produtos));
+		} else {
+			throw new PedidoException("Lista de produtos vazia!");
+		}
 
 		return pedido;
 	}
