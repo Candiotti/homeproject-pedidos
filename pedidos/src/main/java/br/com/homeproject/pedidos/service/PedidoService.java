@@ -1,4 +1,4 @@
-package br.com.homeproject.service;
+package br.com.homeproject.pedidos.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +12,9 @@ import br.com.homeproject.pedidos.dto.PedidoDTO;
 import br.com.homeproject.pedidos.model.Cliente;
 import br.com.homeproject.pedidos.model.Pedido;
 import br.com.homeproject.pedidos.model.Produto;
-import br.com.homeproject.repository.ClienteRepository;
-import br.com.homeproject.repository.PedidoRepository;
-import br.com.homeproject.repository.ProdutoRepository;
+import br.com.homeproject.pedidos.repository.ClienteRepository;
+import br.com.homeproject.pedidos.repository.PedidoRepository;
+import br.com.homeproject.pedidos.repository.ProdutoRepository;
 
 
 @Service

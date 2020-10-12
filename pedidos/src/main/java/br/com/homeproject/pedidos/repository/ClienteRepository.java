@@ -1,4 +1,4 @@
-package br.com.homeproject.repository;
+package br.com.homeproject.pedidos.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
