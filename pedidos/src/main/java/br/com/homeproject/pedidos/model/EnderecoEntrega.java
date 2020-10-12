@@ -1,13 +1,28 @@
 package br.com.homeproject.pedidos.model;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+@Entity
 public class EnderecoEntrega {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String bairro;
 	private String rua;
 	private Integer numero;
 	private String cidade;
 	private String estado;
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "clienteId")
 	private Cliente cliente;
 
 	public Integer getId() {
@@ -34,11 +49,11 @@ public class EnderecoEntrega {
 		this.rua = rua;
 	}
 
-	public Integer getNumero() {
+	public int getNumero() {
 		return numero;
 	}
 
-	public void setNumero(Integer numero) {
+	public void setNumero(int numero) {
 		this.numero = numero;
 	}
 

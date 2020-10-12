@@ -1,11 +1,24 @@
 package br.com.homeproject.pedidos.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Cliente {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+
 	private String nome;
 
 	public Cliente() {
+	}
+
+	public Cliente(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getId() {
