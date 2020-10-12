@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import br.com.homeproject.pedidos.dto.PedidoDTO;
 import br.com.homeproject.pedidos.model.Cliente;
 import br.com.homeproject.pedidos.model.Pedido;
@@ -15,7 +14,7 @@ import br.com.homeproject.pedidos.model.Produto;
 import br.com.homeproject.pedidos.repository.ClienteRepository;
 import br.com.homeproject.pedidos.repository.PedidoRepository;
 import br.com.homeproject.pedidos.repository.ProdutoRepository;
-
+import br.com.homeproject.pedidos.components.PedidoSender;
 
 @Service
 public class PedidoService {
@@ -29,12 +28,17 @@ public class PedidoService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
+	@Autowired
+	private PedidoSender pedidoSender;
+
 	public void adicionarNovoPedido(PedidoDTO pedidoDto) {
 		Pedido pedido = preencherNovoPedido(pedidoDto);
 
 		pedidoRepository.save(pedido);
 
 		pedidoDto.setPedidoId(pedido.getId());
+
+		pedidoSender.enviarParaFila(pedidoDto);
 	}
 
 	public Pedido preencherNovoPedido(PedidoDTO pedidoDto) {
@@ -45,9 +49,9 @@ public class PedidoService {
 		List<Produto> produtos = pedidoDto.getProdutosId().stream().map(i -> produtoRepository.getOne(i))
 				.collect(Collectors.toList());
 
-			pedido.setCliente(cliente.get());
-			pedido.setProdutos(produtos);
-			pedido.setValorTotal(pedidoDto.somarValorTotalPedido(produtos));
+		pedido.setCliente(cliente.get());
+		pedido.setProdutos(produtos);
+		pedido.setValorTotal(pedidoDto.somarValorTotalPedido(produtos));
 
 		return pedido;
 	}
